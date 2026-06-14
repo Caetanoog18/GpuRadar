@@ -1,0 +1,44 @@
+package com.caetano.gpu_radar_api.controller;
+
+import com.caetano.gpu_radar_api.dto.favorite.FavoriteRequest;
+import com.caetano.gpu_radar_api.dto.favorite.FavoriteResponse;
+import com.caetano.gpu_radar_api.dto.favorite.StatusResponse;
+import com.caetano.gpu_radar_api.service.FavoriteService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/favorites")
+public class FavoriteController {
+
+    private final FavoriteService favoriteService;
+
+    public FavoriteController(FavoriteService favoriteService) {
+        this.favoriteService = favoriteService;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public StatusResponse createFavorite(@RequestBody @Valid FavoriteRequest request){
+        return favoriteService.createFavorite(request);
+    }
+
+    @GetMapping("/{id}")
+    public FavoriteResponse getFavoriteById(@PathVariable Long id){
+        return favoriteService.getFavoriteById(id);
+    }
+
+    @GetMapping
+    public List<FavoriteResponse> getAllFavorites(){
+        return favoriteService.getAllFavorites();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteFavorite(@PathVariable Long id){
+        favoriteService.deleteFavorite(id);
+    }
+}
