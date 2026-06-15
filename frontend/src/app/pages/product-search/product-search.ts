@@ -10,6 +10,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Product } from '../../core/models/product';
 import { ProductService } from '../../core/services/product';
 import { FavoriteService } from '../../core/services/favorite';
+import { ProductSearchState } from '../../core/services/product-search-state';
 import { ProductCard } from '../../shared/product-card/product-card';
 
 @Component({
@@ -27,48 +28,50 @@ import { ProductCard } from '../../shared/product-card/product-card';
 })
 export class ProductSearch {
   private readonly productService = inject(ProductService);
-
   private readonly favoriteService = inject(FavoriteService);
-
   private readonly snackBar = inject(MatSnackBar);
+  private readonly searchState = inject(ProductSearchState);
 
-  query = '';
+  get query(): string {
+    return this.searchState.query();
+  }
 
-  products = signal<Product[]>([]);
-  bestOffer = signal<Product | null>(null);
-  resultCount = signal(0);
-  loading = signal(false);
-  searched = signal(false);
+  set query(value: string) {
+    this.searchState.updateQuery(value);
+  }
+
+  readonly products = this.searchState.products;
+  readonly bestOffer = this.searchState.bestOffer;
+  readonly resultCount = this.searchState.resultCount;
+  readonly searched = this.searchState.searched;
+
+  readonly loading = signal(false);
 
   search(): void {
     const value = this.query.trim();
 
     if (!value) {
-      this.snackBar.open('Enter a GPU model', 'Close', { duration: 2500 });
+      this.snackBar.open('Enter a GPU model.', 'Close', { duration: 2500 });
 
       return;
     }
 
     this.loading.set(true);
-    this.searched.set(true);
-    this.products.set([]);
-    this.bestOffer.set(null);
 
     this.productService
       .search(value)
       .pipe(finalize(() => this.loading.set(false)))
       .subscribe({
         next: (response) => {
-          this.products.set(response.results);
-          this.bestOffer.set(response.bestOffer);
-          this.resultCount.set(response.resultCount);
+          this.searchState.saveSearch(
+            value,
+            response.results,
+            response.bestOffer,
+            response.resultCount,
+          );
         },
         error: () => {
-          this.products.set([]);
-          this.bestOffer.set(null);
-          this.resultCount.set(0);
-
-          this.snackBar.open('Unable to fetch products.', 'Close', { duration: 4000 });
+          this.snackBar.open('Could not search for products.', 'Close', { duration: 4000 });
         },
       });
   }
@@ -76,11 +79,7 @@ export class ProductSearch {
   isBestOffer(product: Product): boolean {
     const best = this.bestOffer();
 
-    if (!best) {
-      return false;
-    }
-
-    return product.url === best.url;
+    return best !== null && product.url === best.url;
   }
 
   addFavorite(product: Product): void {
@@ -89,7 +88,7 @@ export class ProductSearch {
         this.snackBar.open('Product added to favorites.', 'Close', { duration: 2500 });
       },
       error: () => {
-        this.snackBar.open('Unable to add favorite.', 'Fechar', { duration: 3500 });
+        this.snackBar.open('Could not add favorite.', 'Close', { duration: 3500 });
       },
     });
   }
