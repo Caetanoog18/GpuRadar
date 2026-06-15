@@ -20,6 +20,17 @@
   align-items: center;
   gap: 12px;
   padding: 4px 10px 28px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateX(2px);
+  }
 
   strong,
   span {
@@ -42,6 +53,7 @@
   width: 42px;
   height: 42px;
   display: grid;
+  flex-shrink: 0;
   place-items: center;
   border-radius: 13px;
   background: linear-gradient(
@@ -65,12 +77,16 @@ nav a {
   border-radius: 11px;
   color: #b8c2d3;
   text-decoration: none;
-  transition: 160ms ease;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 nav a:hover {
   background: rgba(255, 255, 255, 0.06);
   color: white;
+  transform: translateX(2px);
 }
 
 nav a.active {
@@ -90,8 +106,15 @@ nav a.active {
   gap: 4px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 
+  strong {
+    color: #d7deea;
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+
   small {
     color: #77849a;
+    font-size: 0.72rem;
   }
 }
 

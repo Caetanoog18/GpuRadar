@@ -1,15 +1,37 @@
 <header class="header">
-  <div>
-    <span class="header-label">
-      Compare GPU prices
-    </span>
-  </div>
+  <div class="header-content">
+    <div class="page-info">
+      <span class="eyebrow">MARKET OVERVIEW</span>
 
-  <a
-    routerLink="/favorites"
-    class="favorites-link"
-  >
-    <mat-icon>favorite_border</mat-icon>
-    <span>Favorites</span>
-  </a>
+      <div class="title-group">
+        <h1>Compare GPU Prices</h1>
+
+        <span class="status">
+          <span class="status-dot"></span>
+          Live offers
+        </span>
+      </div>
+
+    </div>
+
+    <a
+      routerLink="/favorites"
+      routerLinkActive="active"
+      class="favorites-link"
+      aria-label="Open saved GPU deals"
+    >
+      <span class="favorite-icon">
+        <mat-icon>favorite</mat-icon>
+      </span>
+
+      <span class="favorite-content">
+        <small>Saved GPU deals</small>
+        <strong>View Favorites</strong>
+      </span>
+
+      <span class="favorite-action">
+        <mat-icon>arrow_forward</mat-icon>
+      </span>
+    </a>
+  </div>
 </header>

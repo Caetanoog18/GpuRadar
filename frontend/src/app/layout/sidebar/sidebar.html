@@ -1,5 +1,10 @@
 <aside class="sidebar">
-  <div class="brand">
+  <a
+    class="brand"
+    routerLink="/"
+    (click)="clearSearch()"
+    aria-label="Return to home page"
+  >
     <div class="brand-icon">
       <mat-icon>radar</mat-icon>
     </div>
@@ -8,7 +13,7 @@
       <strong>GPU Radar</strong>
       <span>GPU Price Tracker</span>
     </div>
-  </div>
+  </a>
 
   <nav>
     <a
@@ -38,7 +43,7 @@
   </nav>
 
   <div class="sidebar-footer">
-    <strong>GPU Radar</strong>
+    <strong>Smart Price Tracking</strong>
     <small>Personal Project</small>
   </div>
 </aside>

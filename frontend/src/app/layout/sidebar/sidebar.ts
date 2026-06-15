@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+
+import { ProductSearchState } from '../../core/services/product-search-state';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,4 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
-export class Sidebar {}
+export class Sidebar {
+  private readonly searchState = inject(ProductSearchState);
+
+  clearSearch(): void {
+    this.searchState.clear();
+  }
+}

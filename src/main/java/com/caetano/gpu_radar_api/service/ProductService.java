@@ -16,13 +16,19 @@ import java.util.Objects;
 public class ProductService {
     private final List<StoreClient> storeClients;
     private final SearchHistoryService searchHistoryService;
+    private final GpuSearchValidator gpuSearchValidator;
+    private final GpuProductFilter gpuProductFilter;
 
     public ProductService(
             List<StoreClient> storeClients,
-            SearchHistoryService searchHistoryService
+            SearchHistoryService searchHistoryService,
+            GpuSearchValidator gpuSearchValidator,
+            GpuProductFilter gpuProductFilter
     ){
         this.storeClients = storeClients;
         this.searchHistoryService = searchHistoryService;
+        this.gpuSearchValidator = gpuSearchValidator;
+        this.gpuProductFilter = gpuProductFilter;
     }
 
     public ProductSearchResponse searchProducts(String searchTerm){
@@ -31,6 +37,7 @@ public class ProductService {
         List<ProductResponse> products = storeClients.stream()
                 .flatMap(storeClient -> searchSafely(storeClient, searchTerm).stream())
                 .filter(this::isValidProduct)
+                .filter(gpuProductFilter::isGpuProduct)
                 .sorted(Comparator.comparing(ProductResponse::price))
                 .toList();
 
@@ -60,6 +67,12 @@ public class ProductService {
     private void validateSearchTerm(String searchTerm){
         if(searchTerm == null || searchTerm.isBlank()){
             throw new BusinessRuleException("Search term cannot be null or blank");
+        }
+
+        if (!gpuSearchValidator.isGpuSearch(searchTerm)) {
+            throw new BusinessRuleException(
+                    "Only GPU searches are allowed. Try terms like RTX 4060, GTX 1660, RX 7600 or placa de video."
+            );
         }
     }
 
