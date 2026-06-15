@@ -50,6 +50,7 @@ public class SerpApiClient implements StoreClient {
                             .queryParam("location", "Brazil")
                             .queryParam("gl", "br")
                             .queryParam("hl", "pt")
+                            .queryParam("num", 12)
                             .queryParam("api_key", apiKey)
                             .build()
                     )
@@ -63,7 +64,7 @@ public class SerpApiClient implements StoreClient {
             return response.shoppingResults()
                     .stream()
                     .filter(this::isValidResult)
-                    .limit(10)
+                    .limit(12)
                     .map(this::toProductResponse)
                     .toList();
 
@@ -91,6 +92,7 @@ public class SerpApiClient implements StoreClient {
                 getStoreNameFromResult(result),
                 result.extractedPrice(),
                 getProductUrl(result),
+                result.thumbnail(),
                 false
         );
     }

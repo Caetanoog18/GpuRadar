@@ -1,0 +1,63 @@
+<article
+  class="product-card"
+  [class.best]="bestOffer"
+>
+  @if (bestOffer) {
+    <span class="best-badge">
+      <mat-icon>verified</mat-icon>
+      Best Offer
+    </span>
+  }
+
+  <div class="product-visual">
+    @if (product.imageUrl && !imageError) {
+      <img
+        [src]="product.imageUrl"
+        [alt]="product.name"
+        loading="lazy"
+        referrerpolicy="no-referrer"
+        (error)="onImageError()"
+      >
+    } @else {
+      <mat-icon>memory</mat-icon>
+    }
+  </div>
+
+  <div class="product-content">
+    <span class="store">
+      {{ product.store }}
+    </span>
+
+    <h3>{{ product.name }}</h3>
+
+    <strong class="price">
+      {{ product.price | currency:'BRL' }}
+    </strong>
+
+    @if (product.simulated) {
+      <span class="simulated-badge">
+        Simulated result
+      </span>
+    }
+
+    <div class="actions">
+      <button
+        mat-flat-button
+        class="favorite-button"
+        (click)="favorite.emit(product)"
+      >
+        <mat-icon>favorite_border</mat-icon>
+        Add to Favorites
+      </button>
+
+      <button
+        mat-button
+        class="details-button"
+        (click)="openProduct()"
+      >
+        View Product
+        <mat-icon>open_in_new</mat-icon>
+      </button>
+    </div>
+  </div>
+</article>

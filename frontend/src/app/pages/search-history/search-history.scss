@@ -1,0 +1,98 @@
+.page {
+  width: min(1100px, calc(100% - 48px));
+  margin: auto;
+  padding: 48px 0;
+}
+
+.page-heading span {
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+.page-heading h1 {
+  margin: 6px 0;
+  color: #172033;
+}
+
+.page-heading p {
+  margin: 0;
+  color: #727c8f;
+}
+
+.history-list {
+  margin-top: 32px;
+  display: grid;
+  gap: 14px;
+}
+
+.history-item {
+  padding: 18px 20px;
+  display: grid;
+  grid-template-columns:
+    auto
+    minmax(220px, 1fr)
+    auto
+    auto;
+  align-items: center;
+  gap: 20px;
+  border: 1px solid #e3e7ef;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 8px 24px rgba(29, 40, 68, 0.04);
+}
+
+.history-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #efefff;
+  color: #5147df;
+}
+
+.history-info h3 {
+  margin: 0 0 4px;
+}
+
+.history-info span,
+.history-price span,
+time {
+  color: #788297;
+  font-size: 0.82rem;
+}
+
+.history-price {
+  display: grid;
+  gap: 4px;
+}
+
+.history-price strong {
+  color: #4f46e5;
+}
+
+.state-box {
+  min-height: 350px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.large-icon {
+  width: 58px;
+  height: 58px;
+  color: #6c63e8;
+  font-size: 58px;
+}
+
+@media (max-width: 780px) {
+  .history-item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .history-price,
+  time {
+    grid-column: 2;
+  }
+}

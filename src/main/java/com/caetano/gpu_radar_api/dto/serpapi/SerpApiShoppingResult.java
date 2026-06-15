@@ -15,7 +15,9 @@ public record SerpApiShoppingResult(
         @JsonProperty("product_link")
         String productLink,
 
-        String link
+        String link,
+
+        String thumbnail
 
 ) {
 }

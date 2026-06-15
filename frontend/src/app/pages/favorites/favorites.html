@@ -1,0 +1,110 @@
+<section class="page">
+  <div class="page-heading">
+    <span>Saved products</span>
+
+    <h1>Your favorite GPUs</h1>
+
+    <p>
+      Quickly access the offers you saved.
+    </p>
+  </div>
+
+  @if (loading()) {
+    <div class="state-box">
+      <mat-spinner diameter="44" />
+      <p>Loading favorites...</p>
+    </div>
+  }
+
+  @if (
+    !loading() &&
+    !hasError() &&
+    favorites().length > 0
+    ) {
+    <div class="favorites-grid">
+      @for (
+        favorite of favorites();
+        track favorite.id
+        ) {
+        <article class="favorite-card">
+          <div class="favorite-visual">
+            @if (
+              favorite.imageUrl &&
+              !hasImageError(favorite.id)
+              ) {
+              <img
+                [src]="favorite.imageUrl"
+                [alt]="favorite.name"
+                loading="lazy"
+                referrerpolicy="no-referrer"
+                (error)="onImageError(favorite.id)"
+              >
+            } @else {
+              <mat-icon>memory</mat-icon>
+            }
+          </div>
+
+          <div class="favorite-content">
+            <span>{{ favorite.store }}</span>
+
+            <h3>{{ favorite.name }}</h3>
+
+            <strong>
+              {{ favorite.price | currency:'BRL' }}
+            </strong>
+
+            <div class="actions">
+              <button
+                mat-flat-button
+                (click)="openProduct(favorite.url)"
+              >
+                View Product
+                <mat-icon>open_in_new</mat-icon>
+              </button>
+
+              <button
+                mat-icon-button
+                aria-label="Remove favorite"
+                (click)="delete(favorite.id)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  }
+
+  @if (
+    !loading() &&
+    !hasError() &&
+    favorites().length === 0
+    ) {
+    <div class="state-box">
+      <mat-icon class="large-icon">
+        favorite_border
+      </mat-icon>
+
+      <h2>No favorites saved</h2>
+
+      <p>
+        Add products while browsing search results.
+      </p>
+    </div>
+  }
+
+  @if (!loading() && hasError()) {
+    <div class="state-box">
+      <mat-icon class="large-icon">
+        error_outline
+      </mat-icon>
+
+      <h2>Could not load favorites</h2>
+
+      <p>
+        Make sure the backend is running.
+      </p>
+    </div>
+  }
+</section>

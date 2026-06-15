@@ -31,13 +31,17 @@ public class Favorite {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "image_url", length = 2048)
+    private String imageUrl;
+
     protected Favorite() {}
 
-    public Favorite(String name, String store, BigDecimal price, String url){
+    public Favorite(String name, String store, BigDecimal price, String url, String imageUrl){
         this.name = name;
         this.store = store;
         this.price = price;
         this.url = url;
+        this.imageUrl = imageUrl;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -69,4 +73,6 @@ public class Favorite {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
+    public String getImageUrl() { return imageUrl; }
 }

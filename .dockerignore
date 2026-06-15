@@ -1,0 +1,8 @@
+target/
+data/
+.git/
+.idea/
+.vscode/
+.env
+frontend/
+src/main/resources/application-secrets.properties
