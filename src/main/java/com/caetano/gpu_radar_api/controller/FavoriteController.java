@@ -7,11 +7,13 @@ import com.caetano.gpu_radar_api.service.FavoriteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/favorites")
+@Tag(name = "Favorites", description = "Favorite products management")
 public class FavoriteController {
 
     private final FavoriteService favoriteService;

@@ -4,6 +4,8 @@ import com.caetano.gpu_radar_api.dto.favorite.FavoriteRequest;
 import com.caetano.gpu_radar_api.dto.favorite.FavoriteResponse;
 import com.caetano.gpu_radar_api.dto.favorite.StatusResponse;
 import com.caetano.gpu_radar_api.entity.Favorite;
+import com.caetano.gpu_radar_api.exception.BusinessRuleException;
+import com.caetano.gpu_radar_api.exception.ResourceNotFoundException;
 import com.caetano.gpu_radar_api.mapper.FavoriteMapper;
 import com.caetano.gpu_radar_api.repository.FavoriteRepository;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,7 @@ public class FavoriteService {
 
     public StatusResponse createFavorite(FavoriteRequest request){
         if(favoriteRepository.existsByUrl(request.url())){
-            throw new IllegalArgumentException("A Favorite product with this URL already exists");
+            throw new BusinessRuleException("A favorite with this URL already exists");
         };
 
         Favorite favorite = favoriteMapper.toEntity(request);
@@ -38,7 +40,8 @@ public class FavoriteService {
     public FavoriteResponse getFavoriteById(Long id){
         Favorite favorite = favoriteRepository.findById(id)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("Favorite not found"));
+                        new ResourceNotFoundException("Favorite with ID " + id + " was not found")
+                );
         return favoriteMapper.toResponse(favorite);
     }
 
@@ -48,7 +51,7 @@ public class FavoriteService {
 
     public void deleteFavorite(Long id){
         if(!favoriteRepository.existsById(id)){
-            throw new IllegalArgumentException("Favorite not found");
+            throw new ResourceNotFoundException("Favorite with ID " + id + " was not found");
         }
         favoriteRepository.deleteById(id);
     }
