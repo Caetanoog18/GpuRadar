@@ -20,6 +20,8 @@ public record FavoriteRequest(
 
         @NotBlank(message = "Product URL is required")
         @URL(message = "Product URL must be valid")
-        String url
+        String url,
+
+        String imageUrl
 ) {
 }

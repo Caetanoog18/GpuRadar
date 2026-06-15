@@ -1,0 +1,125 @@
+<section class="hero">
+  <div class="hero-content">
+    <span class="eyebrow">GPU RADAR</span>
+
+    <h1>
+      Find the
+      <span>best GPU</span>
+    </h1>
+
+    <p>
+      Search GPUs, compare prices and save your favorite deals
+    </p>
+
+    <div class="search-box">
+      <mat-icon>search</mat-icon>
+
+      <input
+        [(ngModel)]="query"
+        (keyup.enter)="search()"
+        placeholder="Ex.: RTX 4060, RX 7600, RTX 4070..."
+      >
+
+      <button
+        mat-flat-button
+        (click)="search()"
+        [disabled]="loading()"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="content">
+  @if (loading()) {
+    <div class="state-box">
+      <mat-spinner diameter="48" />
+
+      <h2>Searching offers...</h2>
+
+      <p>
+        Looking for the best available deals.
+      </p>
+    </div>
+  }
+
+  @if (!loading() && products().length > 0) {
+    <div class="section-header">
+      <div>
+        <span>Search Results</span>
+
+        <h2>Offers for “{{ query }}”</h2>
+      </div>
+
+      <span class="result-count">
+        {{ resultCount() }} results
+      </span>
+    </div>
+
+    <div class="products-grid">
+      @for (
+        product of products();
+        track product.url
+        ) {
+        <app-product-card
+          [product]="product"
+          [bestOffer]="isBestOffer(product)"
+          (favorite)="addFavorite($event)"
+        />
+      }
+    </div>
+  }
+
+  @if (
+    !loading() &&
+    searched() &&
+    products().length === 0
+    ) {
+    <div class="state-box">
+      <mat-icon class="large-icon">
+        search_off
+      </mat-icon>
+
+      <h2>No results found</h2>
+
+      <p>
+        Try searching for a different GPU model.
+      </p>
+    </div>
+  }
+
+  @if (!loading() && !searched()) {
+    <div class="welcome-grid">
+      <div class="welcome-card">
+        <mat-icon>search</mat-icon>
+
+        <h3>Search for a GPU</h3>
+
+        <p>
+          Enter a model to find available deals.
+        </p>
+      </div>
+
+      <div class="welcome-card">
+        <mat-icon>price_check</mat-icon>
+
+        <h3>Compare prices</h3>
+
+        <p>
+          The best deal is highlighted automatically..
+        </p>
+      </div>
+
+      <div class="welcome-card">
+        <mat-icon>favorite_border</mat-icon>
+
+        <h3>Save favorites</h3>
+
+        <p>
+          Keep interesting products for later.
+        </p>
+      </div>
+    </div>
+  }
+</section>

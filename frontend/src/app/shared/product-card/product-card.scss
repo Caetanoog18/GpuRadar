@@ -1,0 +1,152 @@
+.product-card {
+  position: relative;
+  height: 100%;
+  min-height: 560px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e8f0;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(29, 40, 68, 0.06);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 42px rgba(29, 40, 68, 0.12);
+}
+
+.product-card.best {
+  border-color: #6d5dfc;
+  box-shadow: 0 12px 32px rgba(109, 93, 252, 0.14);
+}
+
+.best-badge {
+  position: absolute;
+  z-index: 2;
+  top: 14px;
+  left: 14px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 999px;
+  background: #4f46e5;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.best-badge mat-icon {
+  width: 17px;
+  height: 17px;
+  font-size: 17px;
+}
+
+.product-visual {
+  width: 100%;
+  height: 250px;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(
+    180deg,
+    #fafbff,
+    #f4f6fb
+  );
+}
+
+.product-visual img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+.product-visual mat-icon {
+  width: 92px;
+  height: 92px;
+  color: #4f46e5;
+  font-size: 92px;
+}
+
+.product-content {
+  flex: 1;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.store {
+  color: #68748a;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+h3 {
+  min-height: 78px;
+  margin: 9px 0 16px;
+  overflow: hidden;
+  display: -webkit-box;
+  color: #182133;
+  font-size: 1rem;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.price {
+  margin-top: auto;
+  color: #4f46e5;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.simulated-badge {
+  width: fit-content;
+  margin-top: 10px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #fff4d7;
+  color: #8a6500;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.actions {
+  margin-top: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.favorite-button {
+  width: 100%;
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  ) !important;
+  color: #ffffff !important;
+}
+
+.details-button {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .product-card {
+    min-height: auto;
+  }
+
+  .product-visual {
+    height: 220px;
+  }
+
+  h3 {
+    min-height: auto;
+  }
+}

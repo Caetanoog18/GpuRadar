@@ -49,6 +49,23 @@ services:
     networks:
       - gpu-radar-network
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: gpu-radar-frontend
+    restart: unless-stopped
+
+    ports:
+      - "4200:80"
+
+    depends_on:
+      - backend
+
+    networks:
+      - gpu-radar-network
+
 volumes:
   postgres_data:
 
