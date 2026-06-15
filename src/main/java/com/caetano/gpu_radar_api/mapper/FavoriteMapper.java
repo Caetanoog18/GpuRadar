@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class FavoriteMapper {
     public Favorite toEntity(FavoriteRequest request){
-        return new Favorite(request.name(), request.store(), request.price(), request.url());
+        return new Favorite(request.name(), request.store(), request.price(), request.url(), request.imageUrl());
     }
 
     public FavoriteResponse toResponse(Favorite favorite){
@@ -18,6 +18,7 @@ public class FavoriteMapper {
                 favorite.getStore(),
                 favorite.getPrice(),
                 favorite.getUrl(),
+                favorite.getImageUrl(),
                 favorite.getCreatedAt());
     }
 }

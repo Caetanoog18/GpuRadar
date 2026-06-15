@@ -37,3 +37,31 @@ body {
   height: 100%;
 }
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    Inter,
+    Roboto,
+    Arial,
+    sans-serif;
+  background: #f6f7fb;
+  color: #172033;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}

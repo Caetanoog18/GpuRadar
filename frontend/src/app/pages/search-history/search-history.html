@@ -1,1 +1,96 @@
-<p>search-history works!</p>
+<section class="page">
+  <div class="page-heading">
+    <span>Your Searches</span>
+
+    <h1>Search History</h1>
+
+    <p>
+      View previously searched models.
+    </p>
+  </div>
+
+  @if (loading()) {
+    <div class="state-box">
+      <mat-spinner diameter="44" />
+      <p>Loading search history...</p>
+    </div>
+  }
+
+  @if (
+    !loading() &&
+    !hasError() &&
+    histories().length > 0
+    ) {
+    <div class="history-list">
+      @for (
+        history of histories();
+        track history.id
+        ) {
+        <article class="history-item">
+          <div class="history-icon">
+            <mat-icon>history</mat-icon>
+          </div>
+
+          <div class="history-info">
+            <h3>{{ history.searchedTerm }}</h3>
+
+            <span>
+              {{ history.resultCount }}
+              results found
+            </span>
+          </div>
+
+          <div class="history-price">
+            <span>Lowest Price</span>
+
+            <strong>
+              {{
+                history.lowestPriceFound
+                  | currency:'BRL'
+              }}
+            </strong>
+          </div>
+
+          <time>
+            {{
+              history.searchedAt
+                | date:'dd/MM/yyyy HH:mm'
+            }}
+          </time>
+        </article>
+      }
+    </div>
+  }
+
+  @if (
+    !loading() &&
+    !hasError() &&
+    histories().length === 0
+    ) {
+    <div class="state-box">
+      <mat-icon class="large-icon">
+        history_toggle_off
+      </mat-icon>
+
+      <h2>No Searches Found</h2>
+
+      <p>
+        Your searches will appear here.
+      </p>
+    </div>
+  }
+
+  @if (!loading() && hasError()) {
+    <div class="state-box">
+      <mat-icon class="large-icon">
+        error_outline
+      </mat-icon>
+
+      <h2>Unable to Load Search History</h2>
+
+      <p>
+        Please make sure the backend is running.
+      </p>
+    </div>
+  }
+</section>

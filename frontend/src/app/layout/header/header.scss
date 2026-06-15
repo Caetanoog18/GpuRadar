@@ -1,0 +1,36 @@
+.header {
+  height: 64px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0b1525;
+  color: white;
+}
+
+.header-label {
+  color: #8d9bb0;
+  font-size: 0.85rem;
+}
+
+.favorites-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  text-decoration: none;
+}
+
+@media (max-width: 560px) {
+  .header {
+    padding: 0 18px;
+  }
+
+  .header-label {
+    display: none;
+  }
+
+  .favorites-link {
+    margin-left: auto;
+  }
+}

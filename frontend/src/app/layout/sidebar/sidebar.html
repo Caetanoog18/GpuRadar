@@ -1,1 +1,44 @@
-<p>sidebar works!</p>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-icon">
+      <mat-icon>radar</mat-icon>
+    </div>
+
+    <div>
+      <strong>GPU Radar</strong>
+      <span>GPU Price Tracker</span>
+    </div>
+  </div>
+
+  <nav>
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <mat-icon>search</mat-icon>
+      <span>Search GPUs</span>
+    </a>
+
+    <a
+      routerLink="/history"
+      routerLinkActive="active"
+    >
+      <mat-icon>history</mat-icon>
+      <span>History</span>
+    </a>
+
+    <a
+      routerLink="/favorites"
+      routerLinkActive="active"
+    >
+      <mat-icon>favorite_border</mat-icon>
+      <span>Favorites</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <strong>GPU Radar</strong>
+    <small>Personal Project</small>
+  </div>
+</aside>
