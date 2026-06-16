@@ -9,13 +9,13 @@ import com.caetano.gpu_radar_api.exception.BusinessRuleException;
 import com.caetano.gpu_radar_api.exception.ResourceNotFoundException;
 import com.caetano.gpu_radar_api.mapper.FavoriteMapper;
 import com.caetano.gpu_radar_api.repository.FavoriteRepository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class FavoriteService {
-
     private final FavoriteRepository favoriteRepository;
     private final FavoriteMapper favoriteMapper;
     private final CurrentUserService currentUserService;
@@ -76,5 +76,15 @@ public class FavoriteService {
                 ));
 
         favoriteRepository.delete(favorite);
+    }
+
+    @Transactional
+    public void clearFavorites() {
+        UserAccount user =
+                currentUserService.getCurrentUser();
+
+        favoriteRepository.deleteAllByUser_Id(
+                user.getId()
+        );
     }
 }

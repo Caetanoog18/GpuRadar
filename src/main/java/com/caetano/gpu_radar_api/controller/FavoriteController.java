@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -41,5 +42,11 @@ public class FavoriteController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFavorite(@PathVariable Long id) {
         favoriteService.deleteFavorite(id);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void clearFavorites() {
+        favoriteService.clearFavorites();
     }
 }

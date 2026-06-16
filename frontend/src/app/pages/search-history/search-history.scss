@@ -1,10 +1,20 @@
 .page {
-  width: min(1100px, calc(100% - 48px));
+  width: min(
+    1100px,
+    calc(100% - 48px)
+  );
   margin: auto;
   padding: 48px 0;
 }
 
-.page-heading span {
+.page-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.page-heading > div > span {
   color: #4f46e5;
   font-weight: 700;
 }
@@ -19,8 +29,40 @@
   color: #727c8f;
 }
 
+.clear-button {
+  min-height: 42px;
+  border-color:
+    rgba(220, 38, 38, 0.24)
+  !important;
+  color: #c24141 !important;
+}
+
+.clear-button:hover:not(:disabled) {
+  background:
+    rgba(220, 38, 38, 0.06);
+}
+
+.clear-button mat-icon {
+  margin-right: 6px;
+}
+
+.history-summary {
+  margin-top: 28px;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #e2e5ed;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #6f7a8f;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .history-list {
-  margin-top: 32px;
+  margin-top: 18px;
   display: grid;
   gap: 14px;
 }
@@ -37,8 +79,10 @@
   gap: 20px;
   border: 1px solid #e3e7ef;
   border-radius: 14px;
-  background: white;
-  box-shadow: 0 8px 24px rgba(29, 40, 68, 0.04);
+  background: #ffffff;
+  box-shadow:
+    0 8px 24px
+    rgba(29, 40, 68, 0.04);
 }
 
 .history-icon {
@@ -71,12 +115,20 @@ time {
   color: #4f46e5;
 }
 
+.pagination-section {
+  margin-top: 32px;
+}
+
 .state-box {
   min-height: 350px;
   display: grid;
   place-items: center;
   align-content: center;
   text-align: center;
+}
+
+.state-box p {
+  color: #727c8f;
 }
 
 .large-icon {
@@ -87,12 +139,37 @@ time {
 }
 
 @media (max-width: 780px) {
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .history-item {
-    grid-template-columns: auto 1fr;
+    grid-template-columns:
+      auto
+      1fr;
   }
 
   .history-price,
   time {
     grid-column: 2;
+  }
+}
+
+@media (max-width: 520px) {
+  .page {
+    width: min(
+      100% - 30px,
+      1100px
+    );
+  }
+
+  .clear-button {
+    width: 100%;
+  }
+
+  .history-summary {
+    align-items: flex-start;
+    flex-direction: column;
   }
 }

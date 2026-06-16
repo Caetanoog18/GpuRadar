@@ -5,12 +5,15 @@
   @if (bestOffer) {
     <span class="best-badge">
       <mat-icon>verified</mat-icon>
-      Best Offer
+      <span>Best Offer</span>
     </span>
   }
 
   <div class="product-visual">
-    @if (product.imageUrl && !imageError) {
+    @if (
+      product.imageUrl &&
+      !imageError()
+      ) {
       <img
         [src]="product.imageUrl"
         [alt]="product.name"
@@ -19,7 +22,10 @@
         (error)="onImageError()"
       >
     } @else {
-      <mat-icon>memory</mat-icon>
+      <div class="image-fallback">
+        <mat-icon>memory</mat-icon>
+        <span>Image unavailable</span>
+      </div>
     }
   </div>
 
@@ -28,10 +34,15 @@
       {{ product.store }}
     </span>
 
-    <h3>{{ product.name }}</h3>
+    <h3>
+      {{ product.name }}
+    </h3>
 
     <strong class="price">
-      {{ product.price | currency:'BRL' }}
+      {{
+        product.price
+          | currency:'BRL'
+      }}
     </strong>
 
     @if (product.simulated) {
@@ -43,20 +54,66 @@
     <div class="actions">
       <button
         mat-flat-button
+        type="button"
         class="favorite-button"
-        (click)="favorite.emit(product)"
+        [class.favorited]="favorited"
+        [disabled]="favoriteLoading"
+        [attr.aria-pressed]="favorited"
+        [attr.aria-label]="
+          favorited
+            ? 'Remove from favorites'
+            : 'Add to favorites'
+        "
+        [attr.title]="
+          favorited
+            ? 'Remove from favorites'
+            : 'Add to favorites'
+        "
+        (click)="toggleFavorite()"
       >
-        <mat-icon>favorite_border</mat-icon>
-        Add to Favorites
+        <span class="favorite-button-content">
+          <mat-icon>
+            {{
+              favorited
+                ? 'favorite'
+                : 'favorite_border'
+            }}
+          </mat-icon>
+
+          <span class="favorite-button-label">
+            @if (favoriteLoading) {
+              {{
+                favorited
+                  ? 'Saving...'
+                  : 'Removing...'
+              }}
+            } @else {
+              {{
+                favorited
+                  ? 'Saved to Favorites'
+                  : 'Add to Favorites'
+              }}
+            }
+          </span>
+
+          @if (favoriteLoading) {
+            <mat-spinner
+              diameter="18"
+            />
+          }
+        </span>
       </button>
 
       <button
         mat-button
+        type="button"
         class="details-button"
         (click)="openProduct()"
       >
-        View Product
-        <mat-icon>open_in_new</mat-icon>
+        <span class="details-button-content">
+          <mat-icon>open_in_new</mat-icon>
+          <span>View Product</span>
+        </span>
       </button>
     </div>
   </div>

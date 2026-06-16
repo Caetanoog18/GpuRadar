@@ -9,6 +9,7 @@ import { SearchHistory } from '../models/search-history';
 })
 export class SearchHistoryService {
   private readonly http = inject(HttpClient);
+
   private readonly apiUrl = '/api/search-history';
 
   findAll(): Observable<SearchHistory[]> {
@@ -17,5 +18,9 @@ export class SearchHistoryService {
 
   findById(id: number): Observable<SearchHistory> {
     return this.http.get<SearchHistory>(`${this.apiUrl}/${id}`);
+  }
+
+  clearAll(): Observable<void> {
+    return this.http.delete<void>(this.apiUrl);
   }
 }
