@@ -6,7 +6,6 @@ import java.util.List;
 
 @Component
 public class GpuSearchValidator {
-
     private static final List<String> GPU_TERMS = List.of(
             "gpu",
             "placa de video",

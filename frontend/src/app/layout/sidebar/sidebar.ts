@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
+import { AuthService } from '../../core/services/auth';
 import { ProductSearchState } from '../../core/services/product-search-state';
 
 @Component({
@@ -11,9 +12,18 @@ import { ProductSearchState } from '../../core/services/product-search-state';
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
+  private readonly router = inject(Router);
+  private readonly authService = inject(AuthService);
   private readonly searchState = inject(ProductSearchState);
 
   clearSearch(): void {
     this.searchState.clear();
+  }
+
+  logout(): void {
+    this.searchState.clear();
+    this.authService.logout();
+
+    void this.router.navigate(['/login']);
   }
 }
