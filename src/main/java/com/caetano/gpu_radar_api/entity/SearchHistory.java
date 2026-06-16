@@ -6,8 +6,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="search_history")
+@Table(name = "search_history")
 public class SearchHistory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,18 +25,31 @@ public class SearchHistory {
     @Column(nullable = false)
     private LocalDateTime searchedAt;
 
-    protected SearchHistory() {}
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserAccount user;
 
-    public SearchHistory(String searchedTerm, Integer resultCount, BigDecimal lowestPriceFound){
+    protected SearchHistory() {
+    }
+
+    public SearchHistory(
+            String searchedTerm,
+            Integer resultCount,
+            BigDecimal lowestPriceFound,
+            UserAccount user
+    ) {
         this.searchedTerm = searchedTerm;
         this.resultCount = resultCount;
         this.lowestPriceFound = lowestPriceFound;
+        this.user = user;
         this.searchedAt = LocalDateTime.now();
     }
 
     @PrePersist
-    public void prePersist(){
-        if(searchedAt == null) searchedAt = LocalDateTime.now();
+    public void prePersist() {
+        if (searchedAt == null) {
+            searchedAt = LocalDateTime.now();
+        }
     }
 
     public Long getId() {
@@ -56,5 +70,9 @@ public class SearchHistory {
 
     public LocalDateTime getSearchedAt() {
         return searchedAt;
+    }
+
+    public UserAccount getUser() {
+        return user;
     }
 }

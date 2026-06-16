@@ -6,48 +6,68 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "favorites",
-uniqueConstraints = {
-        @UniqueConstraint(name = "uk_favorite_url", columnNames = "url")
-    }
+@Table(
+        name = "favorites",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_favorite_user_url",
+                        columnNames = {"user_id", "url"}
+                )
+        }
 )
 public class Favorite {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 120)
     private String store;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal price;
 
-    @Column(nullable = false, unique = true, length = 1000)
+    @Column(nullable = false, length = 1500)
     private String url;
+
+    @Column(length = 1500)
+    private String imageUrl;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "image_url", length = 2048)
-    private String imageUrl;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserAccount user;
 
-    protected Favorite() {}
+    protected Favorite() {
+    }
 
-    public Favorite(String name, String store, BigDecimal price, String url, String imageUrl){
+    public Favorite(
+            String name,
+            String store,
+            BigDecimal price,
+            String url,
+            String imageUrl,
+            UserAccount user
+    ) {
         this.name = name;
         this.store = store;
         this.price = price;
         this.url = url;
         this.imageUrl = imageUrl;
+        this.user = user;
         this.createdAt = LocalDateTime.now();
     }
 
     @PrePersist
-    public void prePersist(){
-        if(createdAt == null) createdAt = LocalDateTime.now();
+    public void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
     }
 
     public Long getId() {
@@ -70,9 +90,15 @@ public class Favorite {
         return url;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public String getImageUrl() { return imageUrl; }
+    public UserAccount getUser() {
+        return user;
+    }
 }

@@ -1,9 +1,10 @@
 package com.caetano.gpu_radar_api.service;
 
+import com.caetano.gpu_radar_api.dto.CommandResponse;
 import com.caetano.gpu_radar_api.dto.favorite.FavoriteRequest;
 import com.caetano.gpu_radar_api.dto.favorite.FavoriteResponse;
-import com.caetano.gpu_radar_api.dto.favorite.StatusResponse;
 import com.caetano.gpu_radar_api.entity.Favorite;
+import com.caetano.gpu_radar_api.entity.UserAccount;
 import com.caetano.gpu_radar_api.exception.BusinessRuleException;
 import com.caetano.gpu_radar_api.exception.ResourceNotFoundException;
 import com.caetano.gpu_radar_api.mapper.FavoriteMapper;
@@ -14,46 +15,66 @@ import java.util.List;
 
 @Service
 public class FavoriteService {
+
     private final FavoriteRepository favoriteRepository;
     private final FavoriteMapper favoriteMapper;
+    private final CurrentUserService currentUserService;
 
-    public FavoriteService(FavoriteRepository favoriteRepository, FavoriteMapper favoriteMapper) {
+    public FavoriteService(
+            FavoriteRepository favoriteRepository,
+            FavoriteMapper favoriteMapper,
+            CurrentUserService currentUserService
+    ) {
         this.favoriteRepository = favoriteRepository;
         this.favoriteMapper = favoriteMapper;
+        this.currentUserService = currentUserService;
     }
 
-    public StatusResponse createFavorite(FavoriteRequest request){
-        if(favoriteRepository.existsByUrl(request.url())){
-            throw new BusinessRuleException("A favorite with this URL already exists");
-        };
+    public CommandResponse createFavorite(FavoriteRequest request) {
+        UserAccount user = currentUserService.getCurrentUser();
 
-        Favorite favorite = favoriteMapper.toEntity(request);
+        if (favoriteRepository.existsByUrlAndUser_Id(request.url(), user.getId())) {
+            throw new BusinessRuleException("This product is already in your favorites.");
+        }
+
+        Favorite favorite = favoriteMapper.toEntity(request, user);
         Favorite savedFavorite = favoriteRepository.save(favorite);
 
-        return new StatusResponse(
+        return new CommandResponse(
                 "SUCCESS",
                 "Favorite created successfully!",
                 savedFavorite.getId()
         );
     }
 
-    public FavoriteResponse getFavoriteById(Long id){
-        Favorite favorite = favoriteRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Favorite with ID " + id + " was not found")
-                );
+    public List<FavoriteResponse> getAllFavorites() {
+        UserAccount user = currentUserService.getCurrentUser();
+
+        return favoriteRepository.findAllByUser_IdOrderByCreatedAtDesc(user.getId())
+                .stream()
+                .map(favoriteMapper::toResponse)
+                .toList();
+    }
+
+    public FavoriteResponse getFavoriteById(Long id) {
+        UserAccount user = currentUserService.getCurrentUser();
+
+        Favorite favorite = favoriteRepository.findByIdAndUser_Id(id, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Favorite with ID " + id + " was not found."
+                ));
+
         return favoriteMapper.toResponse(favorite);
     }
 
-    public List<FavoriteResponse> getAllFavorites(){
-        return favoriteRepository.findAll().stream().map(favoriteMapper::toResponse).toList();
-    }
+    public void deleteFavorite(Long id) {
+        UserAccount user = currentUserService.getCurrentUser();
 
-    public void deleteFavorite(Long id){
-        if(!favoriteRepository.existsById(id)){
-            throw new ResourceNotFoundException("Favorite with ID " + id + " was not found");
-        }
-        favoriteRepository.deleteById(id);
-    }
+        Favorite favorite = favoriteRepository.findByIdAndUser_Id(id, user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Favorite with ID " + id + " was not found."
+                ));
 
+        favoriteRepository.delete(favorite);
+    }
 }

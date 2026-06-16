@@ -3,6 +3,7 @@ package com.caetano.gpu_radar_api.controller;
 import com.caetano.gpu_radar_api.dto.auth.AuthResponse;
 import com.caetano.gpu_radar_api.dto.auth.LoginRequest;
 import com.caetano.gpu_radar_api.dto.auth.RegisterRequest;
+import com.caetano.gpu_radar_api.dto.auth.RegisterResponse;
 import com.caetano.gpu_radar_api.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public AuthResponse register(
+    public RegisterResponse register(
             @Valid @RequestBody RegisterRequest request
     ) {
         return authService.register(request);

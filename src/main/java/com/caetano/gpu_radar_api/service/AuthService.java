@@ -3,10 +3,13 @@ package com.caetano.gpu_radar_api.service;
 import com.caetano.gpu_radar_api.dto.auth.AuthResponse;
 import com.caetano.gpu_radar_api.dto.auth.LoginRequest;
 import com.caetano.gpu_radar_api.dto.auth.RegisterRequest;
+import com.caetano.gpu_radar_api.dto.auth.RegisterResponse;
 import com.caetano.gpu_radar_api.entity.UserAccount;
 import com.caetano.gpu_radar_api.exception.BusinessRuleException;
+import com.caetano.gpu_radar_api.exception.InvalidCredentialsException;
 import com.caetano.gpu_radar_api.repository.UserAccountRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -35,7 +37,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public AuthResponse register(RegisterRequest request) {
+    public RegisterResponse register(RegisterRequest request) {
         if (userAccountRepository.existsByEmail(request.email())) {
             throw new BusinessRuleException("Email is already registered.");
         }
@@ -49,30 +51,28 @@ public class AuthService {
 
         UserAccount savedUser = userAccountRepository.save(userAccount);
 
-        UserDetails userDetails =
-                customUserDetailsService.loadUserByUsername(savedUser.getEmail());
-
-        String token = jwtService.generateToken(userDetails);
-
-        return new AuthResponse(
-                token,
-                "Bearer",
+        return new RegisterResponse(
                 savedUser.getId(),
                 savedUser.getName(),
-                savedUser.getEmail()
+                savedUser.getEmail(),
+                "Account created successfully. Please sign in."
         );
     }
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.email(),
-                        request.password()
-                )
-        );
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.email(),
+                            request.password()
+                    )
+            );
+        } catch (BadCredentialsException exception) {
+            throw new InvalidCredentialsException("Invalid email or password.");
+        }
 
         UserAccount userAccount = userAccountRepository.findByEmail(request.email())
-                .orElseThrow(() -> new BusinessRuleException("Invalid credentials."));
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password."));
 
         UserDetails userDetails =
                 customUserDetailsService.loadUserByUsername(userAccount.getEmail());

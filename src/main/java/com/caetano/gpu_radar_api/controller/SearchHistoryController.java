@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/search-history")
 @Tag(name = "Search History", description = "Search history operations")
 public class SearchHistoryController {
+
     private final SearchHistoryService searchHistoryService;
 
     public SearchHistoryController(SearchHistoryService searchHistoryService) {
@@ -19,12 +19,12 @@ public class SearchHistoryController {
     }
 
     @GetMapping
-    public List<SearchHistoryResponse> getAllSearchHistories(){
-        return searchHistoryService.getAllSearchHistories();
+    public List<SearchHistoryResponse> getAllSearchHistory() {
+        return searchHistoryService.getAllSearchHistory();
     }
 
     @GetMapping("/{id}")
-    public SearchHistoryResponse getSearchHistoryById(@PathVariable Long id){
+    public SearchHistoryResponse getSearchHistoryById(@PathVariable Long id) {
         return searchHistoryService.getSearchHistoryById(id);
     }
 }
