@@ -1,0 +1,109 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.navigation-button,
+.page-button {
+  border: 1px solid #dfe3ed;
+  background: #ffffff;
+  color: #536078;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.navigation-button {
+  min-height: 40px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.navigation-button mat-icon {
+  width: 19px;
+  height: 19px;
+  font-size: 19px;
+}
+
+.page-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.navigation-button:hover:not(:disabled),
+.page-button:hover:not(.active) {
+  border-color: #8b82ff;
+  color: #4f46e5;
+  transform: translateY(-1px);
+}
+
+.page-button.active {
+  border-color: transparent;
+  background: linear-gradient(
+    135deg,
+    #4f46e5,
+    #7c3aed
+  );
+  color: #ffffff;
+  box-shadow:
+    0 8px 20px
+    rgba(79, 70, 229, 0.24);
+}
+
+.navigation-button:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+}
+
+.ellipsis {
+  min-width: 24px;
+  color: #8993a6;
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  .pagination {
+    gap: 8px;
+  }
+
+  .navigation-button span {
+    display: none;
+  }
+
+  .navigation-button {
+    width: 40px;
+    padding: 0;
+  }
+
+  .page-numbers {
+    gap: 5px;
+  }
+
+  .page-button {
+    width: 36px;
+    height: 36px;
+  }
+}

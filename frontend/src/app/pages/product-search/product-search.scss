@@ -30,7 +30,11 @@
 h1 {
   margin: 14px 0 10px;
   color: #161e2d;
-  font-size: clamp(2.4rem, 5vw, 4.1rem);
+  font-size: clamp(
+    2.4rem,
+    5vw,
+    4.1rem
+  );
   line-height: 1.05;
 }
 
@@ -64,8 +68,10 @@ h1 span {
   gap: 12px;
   border: 1px solid #d9dcf7;
   border-radius: 14px;
-  background: white;
-  box-shadow: 0 14px 38px rgba(52, 50, 120, 0.1);
+  background: #ffffff;
+  box-shadow:
+    0 14px 38px
+    rgba(52, 50, 120, 0.1);
 }
 
 .search-box mat-icon {
@@ -77,6 +83,7 @@ h1 span {
   border: 0;
   outline: 0;
   background: transparent;
+  color: #172033;
   font-size: 1rem;
 }
 
@@ -88,11 +95,14 @@ h1 span {
     #4f46e5,
     #7041df
   );
-  color: white;
+  color: #ffffff;
 }
 
 .content {
-  width: min(1250px, calc(100% - 48px));
+  width: min(
+    1250px,
+    calc(100% - 48px)
+  );
   margin: auto;
   padding: 42px 0 70px;
 }
@@ -102,9 +112,10 @@ h1 span {
   display: flex;
   justify-content: space-between;
   align-items: end;
+  gap: 20px;
 }
 
-.section-header span {
+.section-header > div:first-child > span {
   color: #6e788e;
   font-size: 0.82rem;
 }
@@ -114,19 +125,43 @@ h1 span {
   color: #192133;
 }
 
-.result-count {
+.results-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.result-count,
+.page-indicator {
   padding: 8px 12px;
   border-radius: 9px;
-  background: #edeefe;
-  color: #4f46e5 !important;
+  font-size: 0.82rem;
   font-weight: 700;
+}
+
+.result-count {
+  background: #edeefe;
+  color: #4f46e5;
+}
+
+.page-indicator {
+  border: 1px solid #e0e4ec;
+  background: #ffffff;
+  color: #68748a;
 }
 
 .products-grid {
   display: grid;
   grid-template-columns:
-    repeat(auto-fill, minmax(265px, 1fr));
+    repeat(
+      auto-fill,
+      minmax(265px, 1fr)
+    );
   gap: 22px;
+}
+
+.pagination-section {
+  margin-top: 36px;
 }
 
 .state-box {
@@ -154,7 +189,8 @@ h1 span {
 
 .welcome-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns:
+    repeat(3, 1fr);
   gap: 22px;
 }
 
@@ -162,8 +198,10 @@ h1 span {
   padding: 30px;
   border: 1px solid #e3e6ef;
   border-radius: 18px;
-  background: white;
-  box-shadow: 0 8px 28px rgba(29, 40, 68, 0.05);
+  background: #ffffff;
+  box-shadow:
+    0 8px 28px
+    rgba(29, 40, 68, 0.05);
 
   mat-icon {
     width: 42px;
@@ -190,7 +228,10 @@ h1 span {
   }
 
   .content {
-    width: min(100% - 30px, 1250px);
+    width: min(
+      100% - 30px,
+      1250px
+    );
   }
 
   .welcome-grid {
@@ -198,9 +239,18 @@ h1 span {
   }
 }
 
+@media (max-width: 680px) {
+  .results-summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
 @media (max-width: 560px) {
   .search-box {
-    grid-template-columns: auto 1fr;
+    grid-template-columns:
+      auto
+      1fr;
   }
 
   .search-box button {

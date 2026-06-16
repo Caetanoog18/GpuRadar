@@ -1,18 +1,44 @@
 <section class="page">
   <div class="page-heading">
-    <span>Your Searches</span>
+    <div>
+      <span>Your Searches</span>
 
-    <h1>Search History</h1>
+      <h1>Search History</h1>
 
-    <p>
-      View previously searched models.
-    </p>
+      <p>
+        View previously searched models.
+      </p>
+    </div>
+
+    @if (
+      !loading() &&
+      histories().length > 0
+      ) {
+      <button
+        mat-stroked-button
+        type="button"
+        class="clear-button"
+        [disabled]="clearing()"
+        (click)="clearHistory()"
+      >
+        <mat-icon>delete_sweep</mat-icon>
+
+        {{
+          clearing()
+            ? 'Clearing...'
+            : 'Clear History'
+        }}
+      </button>
+    }
   </div>
 
   @if (loading()) {
     <div class="state-box">
       <mat-spinner diameter="44" />
-      <p>Loading search history...</p>
+
+      <p>
+        Loading search history...
+      </p>
     </div>
   }
 
@@ -21,9 +47,21 @@
     !hasError() &&
     histories().length > 0
     ) {
+    <div class="history-summary">
+      <span>
+        {{ histories().length }}
+        searches
+      </span>
+
+      <span>
+        Page {{ currentPage() }}
+        of {{ totalPages() }}
+      </span>
+    </div>
+
     <div class="history-list">
       @for (
-        history of histories();
+        history of paginatedHistories();
         track history.id
         ) {
         <article class="history-item">
@@ -32,7 +70,9 @@
           </div>
 
           <div class="history-info">
-            <h3>{{ history.searchedTerm }}</h3>
+            <h3>
+              {{ history.searchedTerm }}
+            </h3>
 
             <span>
               {{ history.resultCount }}
@@ -60,6 +100,14 @@
         </article>
       }
     </div>
+
+    <div class="pagination-section">
+      <app-pagination
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        (pageChange)="changePage($event)"
+      />
+    </div>
   }
 
   @if (
@@ -80,13 +128,18 @@
     </div>
   }
 
-  @if (!loading() && hasError()) {
+  @if (
+    !loading() &&
+    hasError()
+    ) {
     <div class="state-box">
       <mat-icon class="large-icon">
         error_outline
       </mat-icon>
 
-      <h2>Unable to Load Search History</h2>
+      <h2>
+        Unable to Load Search History
+      </h2>
 
       <p>
         Please make sure the backend is running.

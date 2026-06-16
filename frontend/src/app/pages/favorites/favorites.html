@@ -1,18 +1,62 @@
-<section class="page">
-  <div class="page-heading">
-    <span>Saved products</span>
+<section class="favorites-page">
+  <header class="page-header">
+    <div class="page-title">
+      <span class="eyebrow">SAVED GPU DEALS</span>
 
-    <h1>Your favorite GPUs</h1>
+      <h1>Your favorite GPUs</h1>
 
-    <p>
-      Quickly access the offers you saved.
-    </p>
-  </div>
+      <p>
+        Review, access and manage the GPU offers you saved.
+      </p>
+    </div>
+
+    @if (!loading() && favorites().length > 0) {
+      <div class="header-actions">
+        <div class="favorites-count">
+          <mat-icon>favorite</mat-icon>
+
+          <div>
+            <strong>{{ favorites().length }}</strong>
+            <span>
+              {{
+                favorites().length === 1
+                  ? 'saved deal'
+                  : 'saved deals'
+              }}
+            </span>
+          </div>
+        </div>
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="clear-button"
+          [disabled]="clearing()"
+          (click)="clearFavorites()"
+        >
+          <mat-icon>delete_sweep</mat-icon>
+
+          <span>
+            {{
+              clearing()
+                ? 'Clearing...'
+                : 'Clear Favorites'
+            }}
+          </span>
+        </button>
+      </div>
+    }
+  </header>
 
   @if (loading()) {
-    <div class="state-box">
-      <mat-spinner diameter="44" />
-      <p>Loading favorites...</p>
+    <div class="state-container">
+      <mat-spinner diameter="46" />
+
+      <h2>Loading favorites</h2>
+
+      <p>
+        Retrieving your saved GPU deals.
+      </p>
     </div>
   }
 
@@ -23,11 +67,11 @@
     ) {
     <div class="favorites-grid">
       @for (
-        favorite of favorites();
+        favorite of paginatedFavorites();
         track favorite.id
         ) {
         <article class="favorite-card">
-          <div class="favorite-visual">
+          <div class="product-image">
             @if (
               favorite.imageUrl &&
               !hasImageError(favorite.id)
@@ -40,31 +84,57 @@
                 (error)="onImageError(favorite.id)"
               >
             } @else {
-              <mat-icon>memory</mat-icon>
+              <div class="image-fallback">
+                <mat-icon>memory</mat-icon>
+                <span>Image unavailable</span>
+              </div>
             }
           </div>
 
-          <div class="favorite-content">
-            <span>{{ favorite.store }}</span>
+          <div class="card-content">
+            <div class="store-row">
+              <span class="store-name">
+                {{ favorite.store }}
+              </span>
 
-            <h3>{{ favorite.name }}</h3>
+              <span class="saved-badge">
+                <mat-icon>favorite</mat-icon>
+                Saved
+              </span>
+            </div>
 
-            <strong>
-              {{ favorite.price | currency:'BRL' }}
-            </strong>
+            <h2 class="product-name">
+              {{ favorite.name }}
+            </h2>
 
-            <div class="actions">
+            <div class="price-section">
+              <span>Current saved price</span>
+
+              <strong>
+                {{
+                  favorite.price
+                    | currency:'BRL'
+                }}
+              </strong>
+            </div>
+
+            <div class="card-actions">
               <button
                 mat-flat-button
+                type="button"
+                class="view-button"
                 (click)="openProduct(favorite.url)"
               >
-                View Product
+                <span>View Product</span>
                 <mat-icon>open_in_new</mat-icon>
               </button>
 
               <button
                 mat-icon-button
+                type="button"
+                class="remove-button"
                 aria-label="Remove favorite"
+                title="Remove favorite"
                 (click)="delete(favorite.id)"
               >
                 <mat-icon>delete_outline</mat-icon>
@@ -74,6 +144,21 @@
         </article>
       }
     </div>
+
+    <footer class="pagination-area">
+      <div class="page-information">
+        Showing page
+        <strong>{{ currentPage() }}</strong>
+        of
+        <strong>{{ totalPages() }}</strong>
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        (pageChange)="changePage($event)"
+      />
+    </footer>
   }
 
   @if (
@@ -81,29 +166,30 @@
     !hasError() &&
     favorites().length === 0
     ) {
-    <div class="state-box">
-      <mat-icon class="large-icon">
-        favorite_border
-      </mat-icon>
+    <div class="state-container empty-state">
+      <div class="state-icon">
+        <mat-icon>favorite_border</mat-icon>
+      </div>
 
-      <h2>No favorites saved</h2>
+      <h2>No favorites saved yet</h2>
 
       <p>
-        Add products while browsing search results.
+        Search for GPUs and save the most interesting deals
+        to access them here later.
       </p>
     </div>
   }
 
   @if (!loading() && hasError()) {
-    <div class="state-box">
-      <mat-icon class="large-icon">
-        error_outline
-      </mat-icon>
+    <div class="state-container error-state">
+      <div class="state-icon">
+        <mat-icon>error_outline</mat-icon>
+      </div>
 
       <h2>Could not load favorites</h2>
 
       <p>
-        Make sure the backend is running.
+        Please check whether the backend is running and try again.
       </p>
     </div>
   }

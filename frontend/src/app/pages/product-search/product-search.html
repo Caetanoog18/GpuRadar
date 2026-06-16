@@ -1,6 +1,8 @@
 <section class="hero">
   <div class="hero-content">
-    <span class="eyebrow">GPU PRICE SEARCH</span>
+    <span class="eyebrow">
+      GPU PRICE SEARCH
+    </span>
 
     <h1>
       Find the
@@ -8,7 +10,8 @@
     </h1>
 
     <p>
-      Search GPUs, compare prices and save your favorite deals
+      Search GPUs, compare prices and save your
+      favorite deals.
     </p>
 
     <div class="search-box">
@@ -22,6 +25,7 @@
 
       <button
         mat-flat-button
+        type="button"
         (click)="search()"
         [disabled]="loading()"
       >
@@ -44,30 +48,52 @@
     </div>
   }
 
-  @if (!loading() && products().length > 0) {
+  @if (
+    !loading() &&
+    products().length > 0
+    ) {
     <div class="section-header">
       <div>
         <span>Search Results</span>
 
-        <h2>Offers for “{{ query }}”</h2>
+        <h2>
+          Offers for “{{ query }}”
+        </h2>
       </div>
 
-      <span class="result-count">
-        {{ resultCount() }} results
-      </span>
+      <div class="results-summary">
+        <span class="result-count">
+          {{ products().length }} products
+        </span>
+
+        <span class="page-indicator">
+          Page {{ currentPage() }}
+          of {{ totalPages() }}
+        </span>
+      </div>
     </div>
 
     <div class="products-grid">
       @for (
-        product of products();
+        product of paginatedProducts();
         track product.url
         ) {
         <app-product-card
           [product]="product"
           [bestOffer]="isBestOffer(product)"
-          (favorite)="addFavorite($event)"
+          [favorited]="isFavorite(product)"
+          [favoriteLoading]="isFavoriteLoading(product)"
+          (favoriteToggle)="toggleFavorite($event)"
         />
       }
+    </div>
+
+    <div class="pagination-section">
+      <app-pagination
+        [currentPage]="currentPage()"
+        [totalPages]="totalPages()"
+        (pageChange)="changePage($event)"
+      />
     </div>
   }
 
@@ -89,7 +115,10 @@
     </div>
   }
 
-  @if (!loading() && !searched()) {
+  @if (
+    !loading() &&
+    !searched()
+    ) {
     <div class="welcome-grid">
       <div class="welcome-card">
         <mat-icon>search</mat-icon>
@@ -112,7 +141,9 @@
       </div>
 
       <div class="welcome-card">
-        <mat-icon>favorite_border</mat-icon>
+        <mat-icon>
+          favorite_border
+        </mat-icon>
 
         <h3>Save favorites</h3>
 

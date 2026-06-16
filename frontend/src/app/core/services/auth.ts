@@ -13,6 +13,7 @@ export class AuthService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl = '/api/auth';
+
   private readonly storageKey = 'gpu-radar-auth';
 
   private readonly sessionSignal = signal<AuthResponse | null>(this.restoreSession());
@@ -42,9 +43,7 @@ export class AuthService {
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
-    return this.http
-      .post<AuthResponse>(`${this.apiUrl}/register`, request)
-      .pipe(tap((response) => this.saveSession(response)));
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, request);
   }
 
   getAuthorizationHeader(): string | null {
@@ -60,18 +59,23 @@ export class AuthService {
   }
 
   logout(): void {
+    sessionStorage.removeItem(this.storageKey);
+
     localStorage.removeItem(this.storageKey);
+
     this.sessionSignal.set(null);
   }
 
   private saveSession(response: AuthResponse): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(response));
+    sessionStorage.setItem(this.storageKey, JSON.stringify(response));
 
     this.sessionSignal.set(response);
   }
 
   private restoreSession(): AuthResponse | null {
-    const storedSession = localStorage.getItem(this.storageKey);
+    localStorage.removeItem(this.storageKey);
+
+    const storedSession = sessionStorage.getItem(this.storageKey);
 
     if (!storedSession) {
       return null;
@@ -80,7 +84,8 @@ export class AuthService {
     try {
       return JSON.parse(storedSession) as AuthResponse;
     } catch {
-      localStorage.removeItem(this.storageKey);
+      sessionStorage.removeItem(this.storageKey);
+
       return null;
     }
   }
