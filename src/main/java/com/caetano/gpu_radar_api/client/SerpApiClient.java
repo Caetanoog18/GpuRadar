@@ -13,9 +13,7 @@ import java.util.List;
 
 @Component
 public class SerpApiClient implements StoreClient {
-
     private static final String STORE_NAME = "Google Shopping";
-
     private final RestClient restClient;
     private final String apiKey;
 

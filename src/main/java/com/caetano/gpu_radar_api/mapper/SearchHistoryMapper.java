@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SearchHistoryMapper {
-
     public SearchHistoryResponse toResponse(SearchHistory searchHistory){
         return new SearchHistoryResponse(
                 searchHistory.getId(),

@@ -43,7 +43,20 @@
   </nav>
 
   <div class="sidebar-footer">
-    <strong>Smart Price Tracking</strong>
-    <small>Personal Project</small>
+    <div class="project-info">
+      <strong>Smart Price Tracking</strong>
+      <small>Personal Project</small>
+    </div>
+
+    <button
+      type="button"
+      class="logout-button"
+      aria-label="Sign out"
+      title="Sign out"
+      (click)="logout()"
+    >
+      <mat-icon>logout</mat-icon>
+      <span>Sign out</span>
+    </button>
   </div>
 </aside>
