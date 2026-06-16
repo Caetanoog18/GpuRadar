@@ -11,7 +11,6 @@ import java.util.List;
 @RequestMapping("/api/search-history")
 @Tag(name = "Search History", description = "Search history operations")
 public class SearchHistoryController {
-
     private final SearchHistoryService searchHistoryService;
 
     public SearchHistoryController(SearchHistoryService searchHistoryService) {

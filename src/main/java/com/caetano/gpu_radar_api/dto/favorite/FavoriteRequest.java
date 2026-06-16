@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public record FavoriteRequest(
-
         @NotBlank(message = "Name is required")
         String name,
 

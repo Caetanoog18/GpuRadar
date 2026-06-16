@@ -13,7 +13,6 @@ import java.util.List;
 
 @Service
 public class SearchHistoryService {
-
     private final SearchHistoryRepository searchHistoryRepository;
     private final SearchHistoryMapper searchHistoryMapper;
     private final CurrentUserService currentUserService;

@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/api/favorites")
 @Tag(name = "Favorites", description = "Favorite products management")
 public class FavoriteController {
-
     private final FavoriteService favoriteService;
 
     public FavoriteController(FavoriteService favoriteService) {
